@@ -1,0 +1,376 @@
+CLASS OWNER
+    ATTRIBUTES
+        PRIVATE owner_id: NUMBER
+        PRIVATE name: TEXT
+        PRIVATE phone: TEXT
+        PRIVATE pets: LIST<PET>[]
+    CONSTRUCTOR(ownerId: NUMBER, ownerName: TEXT, ownerPhone: TEXT)
+        SET owner_id TO ownerId
+        SET name TO ownerName
+        SET phone TO ownerPhone
+        SET pets TO EMPTY LIST
+    END CONSTRUCTOR
+    METHODS
+        ADD_PET(newPet: PET)
+            ADD newPet TO pets
+            DISPLAY "PET ADDED SUCCESSFULLY"
+        END METHOD
+        GET_NAME()
+            RETURN name
+        END METHOD
+        GET_PETS()
+            RETURN pets
+        END METHOD
+END CLASS
+CLASS SPECIES
+    ATTRIBUTES
+        PRIVATE species_name: TEXT
+        PRIVATE care_requirements: TEXT
+        PRIVATE safe_temperature_min: NUMBER
+        PRIVATE safe_temperature_max: NUMBER
+        PRIVATE safe_heart_rate_min: NUMBER
+        PRIVATE safe_heart_rate_max: NUMBER
+    CONSTRUCTOR(speciesName: TEXT, careReq: TEXT, tempMin: NUMBER, tempMax: NUMBER, heartMin: NUMBER, heartMax: NUMBER)
+        SET species_name TO speciesName
+        SET care_requirements TO careReq
+        SET safe_temperature_min TO tempMin
+        SET safe_temperature_max TO tempMax
+        SET safe_heart_rate_min TO heartMin
+        SET safe_heart_rate_max TO heartMax
+    END CONSTRUCTOR
+    METHODS
+        CHECK_TEMPERATURE(temp: NUMBER)
+            IF temp LESS THAN safe_temperature_min OR temp GREATER THAN safe_temperature_max THEN
+                RETURN TRUE
+            ELSE
+                RETURN FALSE
+            END IF
+        END METHOD
+        CHECK_HEART_RATE(rate: NUMBER)
+            IF rate LESS THAN safe_heart_rate_min OR rate GREATER THAN safe_heart_rate_max THEN
+                RETURN TRUE
+            ELSE
+                RETURN FALSE
+            END IF
+        END METHOD
+        GET_SPECIES_NAME()
+            RETURN species_name
+        END METHOD
+        GET_CARE_REQUIREMENTS()
+            RETURN care_requirements
+        END METHOD
+END CLASS
+CLASS PET
+    ATTRIBUTES
+        PRIVATE pet_id: NUMBER
+        PRIVATE name: TEXT
+        PRIVATE date_of_birth: NUMBER
+        PRIVATE owner: OWNER
+        PRIVATE species: SPECIES
+        PRIVATE medical_history: LIST<EXAMINATION>[]
+    CONSTRUCTOR(petId: NUMBER, petName: TEXT, birthYear: NUMBER, petOwner: OWNER, petSpecies: SPECIES)
+        SET pet_id TO petId
+        SET name TO petName
+        SET date_of_birth TO birthYear
+        SET owner TO petOwner
+        SET species TO petSpecies
+        SET medical_history TO EMPTY LIST
+    END CONSTRUCTOR
+    METHODS
+        GET_NAME()
+            RETURN name
+        END METHOD
+        GET_OWNER()
+            RETURN owner
+        END METHOD
+        GET_SPECIES()
+            RETURN species
+        END METHOD
+        GET_AGE(currentYear: NUMBER)
+            RETURN currentYear - date_of_birth
+        END METHOD
+        ADD_MEDICAL_RECORD(exam: EXAMINATION)
+            ADD exam TO medical_history
+            DISPLAY "MEDICAL RECORD ADDED"
+        END METHOD
+        GET_MEDICAL_HISTORY()
+            RETURN medical_history
+        END METHOD
+END CLASS
+CLASS VET
+    ATTRIBUTES
+        PRIVATE vet_id: NUMBER
+        PRIVATE name: TEXT
+        PRIVATE specialization: TEXT
+    CONSTRUCTOR(vetId: NUMBER, vetName: TEXT, vetSpecialization: TEXT)
+        SET vet_id TO vetId
+        SET name TO vetName
+        SET specialization TO vetSpecialization
+    END CONSTRUCTOR
+    METHODS
+        GET_NAME()
+            RETURN name
+        END METHOD
+        GET_SPECIALIZATION()
+            RETURN specialization
+        END METHOD
+END CLASS
+CLASS TREATMENT
+    ATTRIBUTES
+        PRIVATE treatment_name: TEXT
+        PRIVATE description: TEXT
+        PRIVATE cost: NUMBER
+    CONSTRUCTOR(treatmentName: TEXT, treatmentDescription: TEXT, treatmentCost: NUMBER)
+        SET treatment_name TO treatmentName
+        SET description TO treatmentDescription
+        IF treatmentCost LESS THAN 0 THEN
+            SET cost TO 0
+        ELSE
+            SET cost TO treatmentCost
+        END IF
+    END CONSTRUCTOR
+    METHODS
+        GET_TREATMENT_NAME()
+            RETURN treatment_name
+        END METHOD
+        GET_COST()
+            RETURN cost
+        END METHOD
+END CLASS
+CLASS EXAMINATION
+    ATTRIBUTES
+        PRIVATE diagnosis: TEXT
+        PRIVATE temperature: NUMBER
+        PRIVATE heart_rate: NUMBER
+        PRIVATE treatments: LIST<TREATMENT>[]
+        PRIVATE urgent: BOOLEAN
+    CONSTRUCTOR(examDiagnosis: TEXT, temp: NUMBER, heartRate: NUMBER)
+        SET diagnosis TO examDiagnosis
+        SET temperature TO temp
+        SET heart_rate TO heartRate
+        SET treatments TO EMPTY LIST
+        SET urgent TO FALSE
+    END CONSTRUCTOR
+    METHODS
+        ADD_TREATMENT(newTreatment: TREATMENT)
+            ADD newTreatment TO treatments
+            DISPLAY "TREATMENT ADDED"
+        END METHOD
+        CHECK_URGENCY(petSpecies: SPECIES)
+            IF petSpecies.CHECK_TEMPERATURE(temperature) EQUALS TRUE OR petSpecies.CHECK_HEART_RATE(heart_rate) EQUALS TRUE THEN
+                SET urgent TO TRUE
+                DISPLAY "URGENT EXAMINATION"
+            ELSE
+                SET urgent TO FALSE
+                DISPLAY "NORMAL EXAMINATION"
+            END IF
+        END METHOD
+        GET_URGENCY()
+            RETURN urgent
+        END METHOD
+        CALCULATE_TREATMENT_TOTAL()
+            SET total TO 0
+            REPEAT FROM I = 0 TO SIZE OF treatments - 1
+                SET total TO total + treatments[I].GET_COST()
+            END REPEAT
+            RETURN total
+        END METHOD
+END CLASS
+CLASS VISIT
+    ATTRIBUTES
+        PRIVATE visit_id: NUMBER
+        PRIVATE pet: PET
+        PRIVATE vet: VET
+        PRIVATE examinations: LIST<EXAMINATION>[]
+    CONSTRUCTOR(visitId: NUMBER, visitPet: PET, visitVet: VET)
+        SET visit_id TO visitId
+        SET pet TO visitPet
+        SET vet TO visitVet
+        SET examinations TO EMPTY LIST
+    END CONSTRUCTOR
+    METHODS
+        ADD_EXAMINATION(newExamination: EXAMINATION)
+            ADD newExamination TO examinations
+            CALL pet.ADD_MEDICAL_RECORD(newExamination)
+            DISPLAY "EXAMINATION ADDED"
+        END METHOD
+        CALCULATE_VISIT_TOTAL()
+            SET total TO 0
+            REPEAT FROM I = 0 TO SIZE OF examinations - 1
+                SET total TO total + examinations[I].CALCULATE_TREATMENT_TOTAL()
+            END REPEAT
+            RETURN total
+        END METHOD
+END CLASS
+START
+    BEGIN
+        CREATE OBJECT dogSpecies OF SPECIES("Dog", "Needs daily walking and vaccination", 37, 39, 60, 140)
+        CREATE OBJECT owner1 OF OWNER(1, "Mohammed", "91261161")
+        CREATE OBJECT pet1 OF PET(101, "Max", 2020, owner1, dogSpecies)
+        CALL owner1.ADD_PET(pet1)
+        CREATE OBJECT vet1 OF VET(201, "Dr Ahmed", "Animal Care")
+        CREATE OBJECT visit1 OF VISIT(301, pet1, vet1)
+        CREATE OBJECT exam1 OF EXAMINATION("Fever", 40, 150)
+        CALL exam1.CHECK_URGENCY(dogSpecies)
+        CREATE OBJECT treatment1 OF TREATMENT("Medicine", "Fever medicine", 15)
+        CREATE OBJECT treatment2 OF TREATMENT("Injection", "Antibiotic injection", 10)
+        CALL exam1.ADD_TREATMENT(treatment1)
+        CALL exam1.ADD_TREATMENT(treatment2)
+        CALL visit1.ADD_EXAMINATION(exam1)
+        DISPLAY visit1.CALCULATE_VISIT_TOTAL()
+    END
+STOP
+
+TASK 279: Movie Theater
+CLASS FILM
+    ATTRIBUTES
+        PRIVATE film_id: NUMBER
+        PRIVATE title: TEXT
+        PRIVATE duration: NUMBER
+        PRIVATE genre: TEXT
+    CONSTRUCTOR(filmId: NUMBER, filmTitle: TEXT, filmDuration: NUMBER, filmGenre: TEXT)
+        SET film_id TO filmId
+        SET title TO filmTitle
+        SET duration TO filmDuration
+        SET genre TO filmGenre
+    END CONSTRUCTOR
+    METHODS
+        GET_TITLE()
+            RETURN title
+        END METHOD
+        GET_DURATION()
+            RETURN duration
+        END METHOD
+        GET_GENRE()
+            RETURN genre
+        END METHOD
+END CLASS
+CLASS SCREEN
+    ATTRIBUTES
+        PRIVATE screen_id: NUMBER
+        PRIVATE screen_name: TEXT
+        PRIVATE capacity: NUMBER
+        PRIVATE seats: LIST<TEXT>[]
+        PRIVATE showtimes: LIST<SHOWTIME>[]
+    CONSTRUCTOR(screenId: NUMBER, screenName: TEXT, screenCapacity: NUMBER, seatList: LIST<TEXT>)
+        SET screen_id TO screenId
+        SET screen_name TO screenName
+        SET capacity TO screenCapacity
+        SET seats TO seatList
+        SET showtimes TO EMPTY LIST
+    END CONSTRUCTOR
+    METHODS
+        GET_CAPACITY()
+            RETURN capacity
+        END METHOD
+        GET_SEATS()
+            RETURN seats
+        END METHOD
+        ADD_SHOWTIME(newShowtime: SHOWTIME)
+            REPEAT FROM I = 0 TO SIZE OF showtimes - 1
+                IF newShowtime.CHECK_OVERLAP(showtimes[I]) EQUALS TRUE THEN
+                    DISPLAY "SHOWTIME OVERLAPS WITH EXISTING SHOWTIME"
+                    RETURN FALSE
+                END IF
+            END REPEAT
+            ADD newShowtime TO showtimes
+            DISPLAY "SHOWTIME ADDED SUCCESSFULLY"
+            RETURN TRUE
+        END METHOD
+END CLASS
+CLASS SHOWTIME
+    ATTRIBUTES
+        PRIVATE showtime_id: NUMBER
+        PRIVATE film: FILM
+        PRIVATE screen: SCREEN
+        PRIVATE start_time: NUMBER
+        PRIVATE end_time: NUMBER
+        PRIVATE booked_seats: LIST<TEXT>[]
+    CONSTRUCTOR(showtimeId: NUMBER, showFilm: FILM, showScreen: SCREEN, startTime: NUMBER, endTime: NUMBER)
+        SET showtime_id TO showtimeId
+        SET film TO showFilm
+        SET screen TO showScreen
+        SET start_time TO startTime
+        SET end_time TO endTime
+        SET booked_seats TO EMPTY LIST
+    END CONSTRUCTOR
+    METHODS
+        CHECK_OVERLAP(otherShowtime: SHOWTIME)
+            IF start_time LESS THAN otherShowtime.end_time AND end_time GREATER THAN otherShowtime.start_time THEN
+                RETURN TRUE
+            ELSE
+                RETURN FALSE
+            END IF
+        END METHOD
+        BOOK_SEAT(seatNumber: TEXT)
+            IF seatNumber NOT IN screen.GET_SEATS() THEN
+                DISPLAY "SEAT DOES NOT EXIST"
+                RETURN FALSE
+            END IF
+            IF seatNumber IN booked_seats THEN
+                DISPLAY "SEAT ALREADY BOOKED"
+                RETURN FALSE
+            ELSE
+                ADD seatNumber TO booked_seats
+                DISPLAY "SEAT BOOKED SUCCESSFULLY"
+                RETURN TRUE
+            END IF
+        END METHOD
+        GET_AVAILABLE_SEATS()
+            RETURN screen.GET_CAPACITY() - SIZE OF booked_seats
+        END METHOD
+        GET_FILM()
+            RETURN film
+        END METHOD
+        GET_SCREEN()
+            RETURN screen
+        END METHOD
+END CLASS
+CLASS CUSTOMER
+    ATTRIBUTES
+        PRIVATE customer_id: NUMBER
+        PRIVATE name: TEXT
+        PRIVATE phone: TEXT
+    CONSTRUCTOR(customerId: NUMBER, customerName: TEXT, customerPhone: TEXT)
+        SET customer_id TO customerId
+        SET name TO customerName
+        SET phone TO customerPhone
+    END CONSTRUCTOR
+    METHODS
+        GET_NAME()
+            RETURN name
+        END METHOD
+END CLASS
+CLASS TICKET
+    ATTRIBUTES
+        PRIVATE ticket_id: NUMBER
+        PRIVATE customer: CUSTOMER
+        PRIVATE showtime: SHOWTIME
+        PRIVATE seat_number: TEXT
+        PRIVATE price: NUMBER
+    CONSTRUCTOR(ticketId: NUMBER, ticketCustomer: CUSTOMER, ticketShowtime: SHOWTIME, seatNumber: TEXT, ticketPrice: NUMBER)
+        SET ticket_id TO ticketId
+        SET customer TO ticketCustomer
+        SET showtime TO ticketShowtime
+        SET price TO ticketPrice
+        IF ticketShowtime.BOOK_SEAT(seatNumber) EQUALS TRUE THEN
+            SET seat_number TO seatNumber
+            DISPLAY "TICKET CREATED SUCCESSFULLY"
+        ELSE
+            SET seat_number TO ""
+            DISPLAY "TICKET CREATION FAILED"
+        END IF
+    END CONSTRUCTOR
+    METHODS
+        GET_SEAT_NUMBER()
+            RETURN seat_number
+        END METHOD
+        GET_PRICE()
+            RETURN price
+        END METHOD
+END CLASS
+START
+    BEGIN
+        CREATE OBJECT film1 OF FILM(1, "The Lost City", 120, "Adventure")
+        CREATE OBJECT screen1 OF SCREEN(101, "Screen One", 5, ["A1", "A2", "A3", "A4", "A5"])
+        CREATE OBJECT showtime1 OF SHOWTIME(201, fil...
