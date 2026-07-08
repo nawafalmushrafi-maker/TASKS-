@@ -1,0 +1,411 @@
+START
+     BEGIN
+
+CLASS Bookshop
+
+    ATTRIBUTES
+        shopName
+        books
+        sales
+
+    CONSTRUCTOR(shopName)
+
+    METHODS
+        addBook()
+        makeSale()
+
+END CLASS
+
+
+CLASS Book
+
+    ATTRIBUTES
+        title
+        author
+        price
+        genre
+
+    CONSTRUCTOR(title, author, price, genre)
+
+    METHODS
+        displayDetails()
+
+END CLASS
+
+
+CLASS Customer
+
+    ATTRIBUTES
+        customerName
+        purchaseHistory
+
+    CONSTRUCTOR(customerName)
+
+    METHODS
+        addPurchase()
+        viewPurchaseHistory()
+
+END CLASS
+
+
+CLASS Sale
+
+    ATTRIBUTES
+        book
+        soldPrice
+
+    CONSTRUCTOR(book, soldPrice)
+
+    METHODS
+        displaySale()
+
+END CLASS
+
+
+CLASS Genre
+
+    ATTRIBUTES
+        genreName
+
+      CONSTRUCTOR(genreName)
+
+    METHODS
+      displayGenre()
+
+END CLASS
+    END
+STOP
+
+Task 289: Online Exam Platform
+START
+    BEGIN
+CLASS OnlinePlatform
+
+    ATTRIBUTES
+        platformName
+        exams
+        students
+
+    CONSTRUCTOR(platformName)
+
+    METHODS
+        addExam()
+        registerStudent()
+
+END CLASS
+
+
+CLASS Exam
+
+    ATTRIBUTES
+        examTitle
+        timeLimit
+        questions
+
+    CONSTRUCTOR(examTitle, timeLimit)
+
+    METHODS
+        addQuestion()
+
+END CLASS
+
+
+CLASS Question
+
+    ATTRIBUTES
+        questionText
+        correctAnswer
+        pointValue
+
+    CONSTRUCTOR(questionText, correctAnswer, pointValue)
+
+    METHODS
+        checkAnswer()
+
+END CLASS
+
+
+CLASS Student
+
+    ATTRIBUTES
+        studentName
+        attempts
+
+    CONSTRUCTOR(studentName)
+
+    METHODS
+        startAttempt()
+        viewAttempts()
+
+END CLASS
+
+
+CLASS Attempt
+
+    ATTRIBUTES
+        exam
+        student
+        selectedAnswers
+        score
+        startTime
+        timeExpired
+
+    CONSTRUCTOR(exam, student, startTime)
+
+    METHODS
+        submitAnswer()
+        calculateScore()
+        checkTimeLimit()
+        endAttempt()
+
+END CLASS
+
+
+CLASS Answer
+
+    ATTRIBUTES
+        answerText
+
+    CONSTRUCTOR(answerText)
+
+    METHODS
+        displayAnswer()
+
+END CLASS
+    END
+STOP
+
+Task 290: Taxi Company
+START
+    BEGIN
+CLASS TaxiCompany
+
+    ATTRIBUTES
+        companyName
+        drivers
+        trips
+
+    CONSTRUCTOR(companyName)
+
+    METHODS
+        addDriver()
+        createTrip()
+
+END CLASS
+
+
+CLASS Driver
+
+    ATTRIBUTES
+        driverId
+        driverName
+        phoneNumber
+        vehicle
+
+    CONSTRUCTOR(driverId, driverName, phoneNumber, vehicle)
+
+    METHODS
+        acceptTrip()
+        completeTrip()
+
+END CLASS
+
+
+CLASS Vehicle
+
+    ATTRIBUTES
+        vehicleNumber
+        model
+        licensePlate
+
+    CONSTRUCTOR(vehicleNumber, model, licensePlate)
+
+    METHODS
+        displayVehicle()
+
+END CLASS
+
+
+CLASS Passenger
+
+    ATTRIBUTES
+        passengerId
+        passengerName
+        phoneNumber
+
+    CONSTRUCTOR(passengerId, passengerName, phoneNumber)
+
+    METHODS
+        requestTrip()
+
+END CLASS
+
+
+CLASS Trip
+
+    ATTRIBUTES
+        pickupLocation
+        dropoffLocation
+        fare
+        driver
+        passenger
+
+    CONSTRUCTOR(pickupLocation, dropoffLocation, fare, driver, passenger)
+
+    METHODS
+        calculateFare()
+        displayTrip()
+
+END CLASS
+    END
+STOP
+
+Task 291: Co-working Space
+
+START
+    BEGIN
+CLASS CoWorkingSpace
+
+    ATTRIBUTES
+        SET spaceName
+        SET members
+        SET rooms
+        SET bookings
+
+    CONSTRUCTOR(spaceName)
+
+    METHODS
+        addMember()
+        addRoom()
+        createBooking()
+
+END CLASS
+
+
+CLASS Member
+
+    ATTRIBUTES
+        SET memberId
+        SET memberName
+        SET membershipPlan
+        SET bookings
+
+    CONSTRUCTOR(memberId, memberName, membershipPlan)
+
+    METHODS
+        requestBooking()
+        calculateRemainingHours()
+
+END CLASS
+
+
+CLASS MembershipPlan
+
+    ATTRIBUTES
+        planName
+        monthlyQuotaHours
+
+    CONSTRUCTOR(planName, monthlyQuotaHours)
+
+    METHODS
+        displayPlan()
+
+END CLASS
+
+
+CLASS Room
+
+    ATTRIBUTES
+    SET roomId
+    SET roomName
+    SET bookings
+
+    CONSTRUCTOR(roomId, roomName)
+
+    METHODS
+        checkAvailability()
+        addBooking()
+
+END CLASS
+
+
+CLASS Booking
+
+    ATTRIBUTES
+      SET member
+      SET room
+      SET date
+      SET startTime
+      SET endTime
+      SET duration
+
+    CONSTRUCTOR(member, room, date, startTime, endTime)
+
+    METHODS
+        calculateDuration()
+        displayBooking()
+
+END CLASS
+    END
+STOP
+
+
+Task 292: Personal Trainer Bookings
+
+START
+    BEGIN
+CLASS PersonalTrainer
+
+    ATTRIBUTES
+        trainerId
+        trainerName
+        sessions
+
+    CONSTRUCTOR(trainerId, trainerName)
+
+    METHODS
+        addSession()
+        viewSchedule()
+
+END CLASS
+
+
+CLASS Client
+
+    ATTRIBUTES
+        clientId
+        clientName
+        phoneNumber
+        email
+        sessions
+
+    CONSTRUCTOR(clientId, clientName, phoneNumber, email)
+
+    METHODS
+        bookSession()
+        viewSessions()
+
+END CLASS
+
+
+CLASS Session
+
+    ATTRIBUTES
+        sessionDate
+        duration
+        workoutType
+        client
+
+    CONSTRUCTOR(sessionDate, duration, workoutType, client)
+
+    METHODS
+        displaySession()
+
+END CLASS
+    END
+STOP
+
+
+
+
+
