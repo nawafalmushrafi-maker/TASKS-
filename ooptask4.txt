@@ -1,18 +1,33 @@
-START
-     BEGIN
+Task 288: Bookshop:
 
+START
+    BEGIN
 CLASS Bookshop
 
     ATTRIBUTES
         shopName
         books
+        customers
         sales
 
     CONSTRUCTOR(shopName)
 
-    METHODS
-        addBook()
-        makeSale()
+        SET this.shopName = shopName
+        CREATE EMPTY LIST books
+        CREATE EMPTY LIST customers
+        CREATE EMPTY LIST sales
+
+    METHOD addBook(book)
+
+        ADD book TO books
+
+    END METHOD
+
+    METHOD sellBook(sale)
+
+        ADD sale TO sales
+
+    END METHOD
 
 END CLASS
 
@@ -27,8 +42,19 @@ CLASS Book
 
     CONSTRUCTOR(title, author, price, genre)
 
-    METHODS
-        displayDetails()
+        SET this.title = title
+        SET this.author = author
+        SET this.price = price
+        SET this.genre = genre
+
+    METHOD displayBook()
+
+        DISPLAY title
+        DISPLAY author
+        DISPLAY price
+        DISPLAY genre
+
+    END METHOD
 
 END CLASS
 
@@ -36,14 +62,27 @@ END CLASS
 CLASS Customer
 
     ATTRIBUTES
+        customerId
         customerName
         purchaseHistory
 
-    CONSTRUCTOR(customerName)
+    CONSTRUCTOR(customerId, customerName)
 
-    METHODS
-        addPurchase()
-        viewPurchaseHistory()
+        SET this.customerId = customerId
+        SET this.customerName = customerName
+        CREATE EMPTY LIST purchaseHistory
+
+    METHOD buyBook(sale)
+
+        ADD sale TO purchaseHistory
+
+    END METHOD
+
+    METHOD viewPurchaseHistory()
+
+        DISPLAY purchaseHistory
+
+    END METHOD
 
 END CLASS
 
@@ -56,8 +95,15 @@ CLASS Sale
 
     CONSTRUCTOR(book, soldPrice)
 
-    METHODS
-        displaySale()
+        SET this.book = book
+        SET this.soldPrice = soldPrice
+
+    METHOD displaySale()
+
+        DISPLAY book
+        DISPLAY soldPrice
+
+    END METHOD
 
 END CLASS
 
@@ -67,14 +113,33 @@ CLASS Genre
     ATTRIBUTES
         genreName
 
-      CONSTRUCTOR(genreName)
+    CONSTRUCTOR(genreName)
 
-    METHODS
-      displayGenre()
+        SET this.genreName = genreName
+
+    METHOD displayGenre()
+
+        DISPLAY genreName
+
+    END METHOD
 
 END CLASS
-    END
-STOP
+
+
+START
+
+    CREATE genre AS Genre(...)
+    CREATE book AS Book(...)
+    CREATE customer AS Customer(...)
+    CREATE shop AS Bookshop(...)
+    CREATE sale AS Sale(...)
+ELSE
+    CALL shop.addBook(book)
+    CALL shop.sellBook(sale)
+    CALL customer.buyBook(sale)
+    CALL customer.viewPurchaseHistory()
+END
+    STOP
 
 Task 289: Online Exam Platform
 START
@@ -88,9 +153,21 @@ CLASS OnlinePlatform
 
     CONSTRUCTOR(platformName)
 
-    METHODS
-        addExam()
-        registerStudent()
+        SET this.platformName = platformName
+        CREATE EMPTY LIST exams
+        CREATE EMPTY LIST students
+
+    METHOD addExam(exam)
+
+        ADD exam TO exams
+
+    END METHOD
+
+    METHOD registerStudent(student)
+
+        ADD student TO students
+
+    END METHOD
 
 END CLASS
 
@@ -104,8 +181,15 @@ CLASS Exam
 
     CONSTRUCTOR(examTitle, timeLimit)
 
-    METHODS
-        addQuestion()
+        SET this.examTitle = examTitle
+        SET this.timeLimit = timeLimit
+        CREATE EMPTY LIST questions
+
+    METHOD addQuestion(question)
+
+        ADD question TO questions
+
+    END METHOD
 
 END CLASS
 
@@ -119,8 +203,13 @@ CLASS Question
 
     CONSTRUCTOR(questionText, correctAnswer, pointValue)
 
-    METHODS
-        checkAnswer()
+        SET this.questionText = questionText
+        SET this.correctAnswer = correctAnswer
+        SET this.pointValue = pointValue
+
+    METHOD checkAnswer(answer)
+
+    END METHOD
 
 END CLASS
 
@@ -128,14 +217,27 @@ END CLASS
 CLASS Student
 
     ATTRIBUTES
+        studentId
         studentName
         attempts
 
-    CONSTRUCTOR(studentName)
+    CONSTRUCTOR(studentId, studentName)
 
-    METHODS
-        startAttempt()
-        viewAttempts()
+        SET this.studentId = studentId
+        SET this.studentName = studentName
+        CREATE EMPTY LIST attempts
+
+    METHOD startAttempt(attempt)
+
+        ADD attempt TO attempts
+
+    END METHOD
+
+    METHOD viewAttempts()
+
+        DISPLAY attempts
+
+    END METHOD
 
 END CLASS
 
@@ -148,34 +250,56 @@ CLASS Attempt
         selectedAnswers
         score
         startTime
-        timeExpired
 
     CONSTRUCTOR(exam, student, startTime)
 
-    METHODS
-        submitAnswer()
-        calculateScore()
-        checkTimeLimit()
-        endAttempt()
+        SET this.exam = exam
+        SET this.student = student
+        SET this.startTime = startTime
+        SET this.score = 0
+        CREATE EMPTY LIST selectedAnswers
+
+    METHOD submitAnswer(answer)
+
+    END METHOD
+
+    METHOD calculateScore()
+
+    END METHOD
+
+    METHOD checkTimeLimit()
+
+    END METHOD
+
+    METHOD displayScore()
+
+        DISPLAY score
+
+    END METHOD
 
 END CLASS
 
 
-CLASS Answer
+START
 
-    ATTRIBUTES
-        answerText
+    CREATE platform AS OnlinePlatform(...)
+    CREATE exam AS Exam(...)
+    CREATE question AS Question(...)
+    CREATE student AS Student(...)
+    CREATE attempt AS Attempt(...)
+ELSE
+    CALL platform.addExam(exam)
+    CALL platform.registerStudent(student)
+    CALL exam.addQuestion(question)
+    CALL student.startAttempt(attempt)
+    CALL attempt.submitAnswer(...)
+    CALL attempt.calculateScore()
+    CALL attempt.displayScore()
+END
+    STOP
 
-    CONSTRUCTOR(answerText)
+Task 290: Taxi Company:
 
-    METHODS
-        displayAnswer()
-
-END CLASS
-    END
-STOP
-
-Task 290: Taxi Company
 START
     BEGIN
 CLASS TaxiCompany
@@ -187,9 +311,21 @@ CLASS TaxiCompany
 
     CONSTRUCTOR(companyName)
 
-    METHODS
-        addDriver()
-        createTrip()
+        SET this.companyName = companyName
+        CREATE EMPTY LIST drivers
+        CREATE EMPTY LIST trips
+
+    METHOD addDriver(driver)
+
+        ADD driver TO drivers
+
+    END METHOD
+
+    METHOD createTrip(trip)
+
+        ADD trip TO trips
+
+    END METHOD
 
 END CLASS
 
@@ -204,9 +340,18 @@ CLASS Driver
 
     CONSTRUCTOR(driverId, driverName, phoneNumber, vehicle)
 
-    METHODS
-        acceptTrip()
-        completeTrip()
+        SET this.driverId = driverId
+        SET this.driverName = driverName
+        SET this.phoneNumber = phoneNumber
+        SET this.vehicle = vehicle
+
+    METHOD acceptTrip()
+
+    END METHOD
+
+    METHOD completeTrip()
+
+    END METHOD
 
 END CLASS
 
@@ -220,8 +365,17 @@ CLASS Vehicle
 
     CONSTRUCTOR(vehicleNumber, model, licensePlate)
 
-    METHODS
-        displayVehicle()
+        SET this.vehicleNumber = vehicleNumber
+        SET this.model = model
+        SET this.licensePlate = licensePlate
+
+    METHOD displayVehicle()
+
+        DISPLAY vehicleNumber
+        DISPLAY model
+        DISPLAY licensePlate
+
+    END METHOD
 
 END CLASS
 
@@ -235,8 +389,13 @@ CLASS Passenger
 
     CONSTRUCTOR(passengerId, passengerName, phoneNumber)
 
-    METHODS
-        requestTrip()
+        SET this.passengerId = passengerId
+        SET this.passengerName = passengerName
+        SET this.phoneNumber = phoneNumber
+
+    METHOD requestTrip()
+
+    END METHOD
 
 END CLASS
 
@@ -245,39 +404,82 @@ CLASS Trip
 
     ATTRIBUTES
         pickupLocation
-        dropoffLocation
+        dropOffLocation
         fare
         driver
         passenger
 
-    CONSTRUCTOR(pickupLocation, dropoffLocation, fare, driver, passenger)
+    CONSTRUCTOR(pickupLocation, dropOffLocation, fare, driver, passenger)
 
-    METHODS
-        calculateFare()
-        displayTrip()
+        SET this.pickupLocation = pickupLocation
+        SET this.dropOffLocation = dropOffLocation
+        SET this.fare = fare
+        SET this.driver = driver
+        SET this.passenger = passenger
+
+    METHOD displayTrip()
+
+        DISPLAY pickupLocation
+        DISPLAY dropOffLocation
+        DISPLAY fare
+
+    END METHOD
 
 END CLASS
-    END
-STOP
 
-Task 291: Co-working Space
 
 START
+
+    CREATE company AS TaxiCompany(...)
+    CREATE vehicle AS Vehicle(...)
+    CREATE driver AS Driver(...)
+    CREATE passenger AS Passenger(...)
+    CREATE trip AS Trip(...)
+ELSE
+    CALL company.addDriver(driver)
+    CALL passenger.requestTrip()
+    CALL company.createTrip(trip)
+    CALL driver.acceptTrip()
+    CALL driver.completeTrip()
+    CALL trip.displayTrip()
+END
+    STOP
+
+Task 291: Co-working Space:
+START 
     BEGIN
 CLASS CoWorkingSpace
 
     ATTRIBUTES
-        SET spaceName
-        SET members
-        SET rooms
-        SET bookings
+        spaceName
+        members
+        rooms
+        bookings
 
     CONSTRUCTOR(spaceName)
 
-    METHODS
-        addMember()
-        addRoom()
-        createBooking()
+        SET this.spaceName = spaceName
+        CREATE EMPTY LIST members
+        CREATE EMPTY LIST rooms
+        CREATE EMPTY LIST bookings
+
+    METHOD addMember(member)
+
+        ADD member TO members
+
+    END METHOD
+
+    METHOD addRoom(room)
+
+        ADD room TO rooms
+
+    END METHOD
+
+    METHOD createBooking(booking)
+
+        ADD booking TO bookings
+
+    END METHOD
 
 END CLASS
 
@@ -285,16 +487,27 @@ END CLASS
 CLASS Member
 
     ATTRIBUTES
-        SET memberId
-        SET memberName
-        SET membershipPlan
-        SET bookings
+        memberId
+        memberName
+        membershipPlan
+        bookings
 
     CONSTRUCTOR(memberId, memberName, membershipPlan)
 
-    METHODS
-        requestBooking()
-        calculateRemainingHours()
+        SET this.memberId = memberId
+        SET this.memberName = memberName
+        SET this.membershipPlan = membershipPlan
+        CREATE EMPTY LIST bookings
+
+    METHOD requestBooking(booking)
+
+        ADD booking TO bookings
+
+    END METHOD
+
+    METHOD calculateRemainingHours()
+
+    END METHOD
 
 END CLASS
 
@@ -307,8 +520,15 @@ CLASS MembershipPlan
 
     CONSTRUCTOR(planName, monthlyQuotaHours)
 
-    METHODS
-        displayPlan()
+        SET this.planName = planName
+        SET this.monthlyQuotaHours = monthlyQuotaHours
+
+    METHOD displayPlan()
+
+        DISPLAY planName
+        DISPLAY monthlyQuotaHours
+
+    END METHOD
 
 END CLASS
 
@@ -316,15 +536,25 @@ END CLASS
 CLASS Room
 
     ATTRIBUTES
-    SET roomId
-    SET roomName
-    SET bookings
+        roomId
+        roomName
+        bookings
 
     CONSTRUCTOR(roomId, roomName)
 
-    METHODS
-        checkAvailability()
-        addBooking()
+        SET this.roomId = roomId
+        SET this.roomName = roomName
+        CREATE EMPTY LIST bookings
+
+    METHOD checkAvailability()
+
+    END METHOD
+
+    METHOD addBooking(booking)
+
+        ADD booking TO bookings
+
+    END METHOD
 
 END CLASS
 
@@ -332,23 +562,52 @@ END CLASS
 CLASS Booking
 
     ATTRIBUTES
-      SET member
-      SET room
-      SET date
-      SET startTime
-      SET endTime
-      SET duration
+        member
+        room
+        bookingDate
+        startTime
+        endTime
+        duration
 
-    CONSTRUCTOR(member, room, date, startTime, endTime)
+    CONSTRUCTOR(member, room, bookingDate, startTime, endTime)
 
-    METHODS
-        calculateDuration()
-        displayBooking()
+        SET this.member = member
+        SET this.room = room
+        SET this.bookingDate = bookingDate
+        SET this.startTime = startTime
+        SET this.endTime = endTime
+
+    METHOD calculateDuration()
+
+    END METHOD
+
+    METHOD displayBooking()
+
+        DISPLAY bookingDate
+        DISPLAY startTime
+        DISPLAY endTime
+
+    END METHOD
 
 END CLASS
-    END
-STOP
 
+
+START
+
+    CREATE plan AS MembershipPlan
+    CREATE member AS Member
+    CREATE room AS Room
+    CREATE booking AS Booking
+    CREATE space AS CoWorkingSpace
+ELSE
+    CALL space.addMember(member)
+    CALL space.addRoom(room)
+    CALL member.requestBooking(booking)
+    CALL room.addBooking(booking)
+    CALL space.createBooking(booking)
+    CALL member.calculateRemainingHours()
+END
+   STOP
 
 Task 292: Personal Trainer Bookings
 
@@ -359,13 +618,25 @@ CLASS PersonalTrainer
     ATTRIBUTES
         trainerId
         trainerName
-        sessions
+        sessionList
 
     CONSTRUCTOR(trainerId, trainerName)
 
-    METHODS
-        addSession()
-        viewSchedule()
+        SET this.trainerId = trainerId
+        SET this.trainerName = trainerName
+        CREATE EMPTY LIST sessionList
+
+    METHOD addSession(session)
+
+        ADD session TO sessionList
+
+    END METHOD
+
+    METHOD viewSessions()
+
+        DISPLAY sessionList
+
+    END METHOD
 
 END CLASS
 
@@ -381,9 +652,23 @@ CLASS Client
 
     CONSTRUCTOR(clientId, clientName, phoneNumber, email)
 
-    METHODS
-        bookSession()
-        viewSessions()
+        SET this.clientId = clientId
+        SET this.clientName = clientName
+        SET this.phoneNumber = phoneNumber
+        SET this.email = email
+        CREATE EMPTY LIST sessions
+
+    METHOD bookSession(session)
+
+        ADD session TO sessions
+
+    END METHOD
+
+    METHOD viewSessions()
+
+        DISPLAY sessions
+
+    END METHOD
 
 END CLASS
 
@@ -398,12 +683,36 @@ CLASS Session
 
     CONSTRUCTOR(sessionDate, duration, workoutType, client)
 
-    METHODS
-        displaySession()
+        SET this.sessionDate = sessionDate
+        SET this.duration = duration
+        SET this.workoutType = workoutType
+        SET this.client = client
+
+    METHOD displaySession()
+
+        DISPLAY sessionDate
+        DISPLAY duration
+        DISPLAY workoutType
+
+    END METHOD
 
 END CLASS
-    END
-STOP
+
+
+START
+
+    CREATE trainer AS PersonalTrainer(...)
+    CREATE client AS Client(...)
+    CREATE session AS Session(...)
+ELSE
+    CALL client.bookSession(session)
+    CALL trainer.addSession(session)
+    CALL trainer.viewSessions()
+    CALL client.viewSessions()
+    CALL session.displaySession()
+END
+    STOP
+
 
 
 
