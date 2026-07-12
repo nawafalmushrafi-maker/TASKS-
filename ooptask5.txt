@@ -1,0 +1,1062 @@
+TASK 293: Shape Drawing App
+CLASS SHAPE
+    ATTRIBUTES
+        PRIVATE color: TEXT
+        PRIVATE position: TEXT
+    CONSTRUCTOR(shapeColor: TEXT, shapePosition: TEXT)
+        SET color TO shapeColor
+        SET position TO shapePosition
+    END CONSTRUCTOR
+    METHODS
+        GET_COLOR()
+            RETURN color
+        END METHOD
+        GET_POSITION()
+            RETURN position
+        END METHOD
+        GET_AREA()
+            RETURN 0
+        END METHOD
+        GET_PERIMETER()
+            RETURN 0
+        END METHOD
+END CLASS
+CLASS CIRCLE INHERITS SHAPE
+    ATTRIBUTES
+        PRIVATE radius: NUMBER
+    CONSTRUCTOR(circleColor: TEXT, circlePosition: TEXT, circleRadius: NUMBER)
+        CALL SUPER(circleColor, circlePosition)
+        IF circleRadius LESS THAN 0 THEN
+            SET radius TO 0
+        ELSE
+            SET radius TO circleRadius
+        END IF
+    END CONSTRUCTOR
+    METHODS
+        GET_AREA()
+            RETURN 3.14 * radius * radius
+        END METHOD
+        GET_PERIMETER()
+            RETURN 2 * 3.14 * radius
+        END METHOD
+END CLASS
+CLASS RECTANGLE INHERITS SHAPE
+    ATTRIBUTES
+        PRIVATE width: NUMBER
+        PRIVATE height: NUMBER
+    CONSTRUCTOR(rectColor: TEXT, rectPosition: TEXT, rectWidth: NUMBER, rectHeight: NUMBER)
+        CALL SUPER(rectColor, rectPosition)
+        IF rectWidth LESS THAN 0 THEN
+            SET width TO 0
+        ELSE
+            SET width TO rectWidth
+        END IF
+        IF rectHeight LESS THAN 0 THEN
+            SET height TO 0
+        ELSE
+            SET height TO rectHeight
+        END IF
+    END CONSTRUCTOR
+    METHODS
+        GET_AREA()
+            RETURN width * height
+        END METHOD
+        GET_PERIMETER()
+            RETURN 2 * (width + height)
+        END METHOD
+END CLASS
+CLASS TRIANGLE INHERITS SHAPE
+    ATTRIBUTES
+        PRIVATE side_one: NUMBER
+        PRIVATE side_two: NUMBER
+        PRIVATE side_three: NUMBER
+    CONSTRUCTOR(triColor: TEXT, triPosition: TEXT, s1: NUMBER, s2: NUMBER, s3: NUMBER)
+        CALL SUPER(triColor, triPosition)
+        IF s1 LESS THAN 0 THEN
+            SET side_one TO 0
+        ELSE
+            SET side_one TO s1
+        END IF
+        IF s2 LESS THAN 0 THEN
+            SET side_two TO 0
+        ELSE
+            SET side_two TO s2
+        END IF
+        IF s3 LESS THAN 0 THEN
+            SET side_three TO 0
+        ELSE
+            SET side_three TO s3
+        END IF
+    END CONSTRUCTOR
+    METHODS
+        GET_PERIMETER()
+            RETURN side_one + side_two + side_three
+        END METHOD
+        GET_AREA()
+            SET semiPerimeter TO GET_PERIMETER() / 2
+            RETURN SQUARE_ROOT(semiPerimeter * (semiPerimeter - side_one) * (semiPerimeter - side_two) * (semiPerimeter - side_three))
+        END METHOD
+END CLASS
+CLASS CANVAS
+    ATTRIBUTES
+        PRIVATE shapes: LIST<SHAPE>[]
+    CONSTRUCTOR()
+        SET shapes TO EMPTY LIST
+    END CONSTRUCTOR
+    METHODS
+        ADD_SHAPE(newShape: SHAPE)
+            ADD newShape TO shapes
+            DISPLAY "SHAPE ADDED TO CANVAS"
+        END METHOD
+        GET_SHAPES()
+            RETURN shapes
+        END MEHOD
+        CALCULATE_TOTAL_AREA()
+            SET total TO 0
+            REPEAT FROM I = 0 TO SIZE OF shapes - 1
+                SET total TO total + shapes[I].GET_AREA()
+            END REPEAT
+            RETURN total
+        END METHOD
+END CLASS
+START
+    BEGIN
+        CREATE OBJECT canvas1 OF CANVAS()
+        CREATE OBJECT circle1 OF CIRCLE("Red", "x=10,y=20", 5)
+        CREATE OBJECT rectangle1 OF RECTANGLE("Blue", "x=30,y=40", 10, 6)
+        CREATE OBJECT triangle1 OF TRIANGLE("Green", "x=50,y=60", 3, 4, 5)
+        CALL canvas1.ADD_SHAPE(circle1)
+        CALL canvas1.ADD_SHAPE(rectangle1)
+        CALL canvas1.ADD_SHAPE(triangle1)
+        DISPLAY circle1.GET_AREA()
+        DISPLAY rectangle1.GET_PERIMETER()
+        DISPLAY triangle1.GET_AREA()
+        DISPLAY canvas1.CALCULATE_TOTAL_AREA()
+    END
+STOP
+
+
+
+
+
+Task 294: Employee Payroll
+START
+  BEGIN
+
+CLASS Employee
+    ATTRIBUTES
+        PRIVATE employeeID : Number
+        PRIVATE employeeName : String
+        PRIVATE hireDate : String
+
+    CONSTRUCTOR(employeeID, employeeName, hireDate)
+        SET employeeID
+        SET employeeName
+        SET hireDate
+    END CONSTRUCTOR
+
+    METHOD calculatePay()
+        RETURN 0
+    END METHOD
+END CLASS
+
+CLASS SalariedEmployee EXTENDS Employee
+    ATTRIBUTES
+        PRIVATE monthlySalary : Number
+
+    CONSTRUCTOR(employeeID, employeeName, hireDate, monthlySalary)
+        CALL Employee(employeeID, employeeName, hireDate)
+        SET monthlySalary
+    END CONSTRUCTOR
+
+    METHOD calculatePay()
+        RETURN monthlySalary
+    END METHOD
+END CLASS
+
+CLASS HourlyEmployee EXTENDS Employee
+    ATTRIBUTES
+        PRIVATE hourlyRate : Number
+        PRIVATE hoursWorked : Number
+
+    CONSTRUCTOR(employeeID, employeeName, hireDate, hourlyRate, hoursWorked)
+        CALL Employee(employeeID, employeeName, hireDate)
+        SET hourlyRate
+        SET hoursWorked
+    END CONSTRUCTOR
+
+    METHOD calculatePay()
+        RETURN hourlyRate * hoursWorked
+    END METHOD
+END CLASS
+
+CLASS CommissionEmployee EXTENDS Employee
+    ATTRIBUTES
+        PRIVATE basePay : Number
+        PRIVATE sales : Number
+        PRIVATE commissionRate : Number
+
+    CONSTRUCTOR(employeeID, employeeName, hireDate, basePay, sales, commissionRate)
+        CALL Employee(employeeID, employeeName, hireDate)
+        SET basePay
+        SET sales
+        SET commissionRate
+    END CONSTRUCTOR
+
+    METHOD calculatePay()
+        RETURN basePay + (sales * commissionRate)
+    END METHOD
+END CLASS
+
+CLASS Payroll
+    ATTRIBUTES
+        PRIVATE employees : List<Employee>
+
+    CONSTRUCTOR()
+        CREATE empty employees list
+    END CONSTRUCTOR
+
+    METHOD addEmployee(employee)
+        ADD employee TO employees
+    END METHOD
+END CLASS
+
+  END
+STOP
+
+
+
+ Task 295: Zoo Animal Enclosures
+START
+    BEGIN
+  CLASS Animal
+    ATTRIBUTES
+        PRIVATE name : String
+        PRIVATE age : Number
+        PRIVATE dietType : String
+
+    CONSTRUCTOR(name, age, dietType)
+        SET name
+        SET age
+        SET dietType
+    END CONSTRUCTOR
+
+    METHOD makeSound()
+    END METHOD
+
+    METHOD move()
+    END METHOD
+END CLASS
+
+CLASS Bird EXTENDS Animal
+    ATTRIBUTES
+        PRIVATE canFly : Boolean
+        PRIVATE laysEggs : Boolean
+
+    CONSTRUCTOR(name, age, dietType, canFly, laysEggs)
+        CALL Animal(name, age, dietType)
+        SET canFly
+        SET laysEggs
+    END CONSTRUCTOR
+
+    METHOD makeSound()
+        DISPLAY "Chirp"
+    END METHOD
+
+    METHOD move()
+        DISPLAY "Flies"
+    END METHOD
+END CLASS
+
+CLASS Fish EXTENDS Animal
+    ATTRIBUTES
+        PRIVATE hasGills : Boolean
+
+    CONSTRUCTOR(name, age, dietType, hasGills)
+        CALL Animal(name, age, dietType)
+        SET hasGills
+    END CONSTRUCTOR
+
+    METHOD makeSound()
+        DISPLAY "Blub"
+    END METHOD
+
+    METHOD move()
+        DISPLAY "Swims"
+    END METHOD
+END CLASS
+
+CLASS Mammal EXTENDS Animal
+    ATTRIBUTES
+        PRIVATE hasFur : Boolean
+        PRIVATE givesLiveBirth : Boolean
+
+    CONSTRUCTOR(name, age, dietType, hasFur, givesLiveBirth)
+        CALL Animal(name, age, dietType)
+        SET hasFur
+        SET givesLiveBirth
+    END CONSTRUCTOR
+
+    METHOD makeSound()
+        DISPLAY "Mammal Sound"
+    END METHOD
+
+    METHOD move()
+        DISPLAY "Walks"
+    END METHOD
+END CLASS
+
+CLASS Enclosure
+    ATTRIBUTES
+        PRIVATE enclosureID : Number
+        PRIVATE temperature : Number
+        PRIVATE animals : List<Animal>
+
+    CONSTRUCTOR(enclosureID, temperature)
+        SET enclosureID
+        SET temperature
+        CREATE empty animals list
+    END CONSTRUCTOR
+
+    METHOD addAnimal(animal)
+        ADD animal TO animals
+    END METHOD
+END CLASS
+
+END
+STOP
+
+
+Task 296: Online Payment Methods
+START
+    BEGIN
+
+CLASS PaymentMethod
+    ATTRIBUTES
+        PRIVATE amount : Number
+        PRIVATE status : String
+
+    CONSTRUCTOR(amount)
+        SET amount
+        SET status = "Pending"
+    END CONSTRUCTOR
+
+    METHOD processPayment()
+    END METHOD
+END CLASS
+
+CLASS CreditCardPayment EXTENDS PaymentMethod
+    ATTRIBUTES
+        PRIVATE cardNumber : String
+        PRIVATE expiryDate : String
+
+    CONSTRUCTOR(amount, cardNumber, expiryDate)
+        CALL PaymentMethod(amount)
+        SET cardNumber
+        SET expiryDate
+    END CONSTRUCTOR
+
+    METHOD processPayment()
+        IF validateCard() THEN
+            SET status = "Completed"
+        ELSE
+            DISPLAY "Invalid card details"
+        END IF
+    END METHOD
+
+    METHOD validateCard()
+        RETURN TRUE
+    END METHOD
+END CLASS
+
+CLASS BankTransferPayment EXTENDS PaymentMethod
+    ATTRIBUTES
+        PRIVATE accountNumber : String
+
+    CONSTRUCTOR(amount, accountNumber)
+        CALL PaymentMethod(amount)
+        SET accountNumber
+    END CONSTRUCTOR
+
+    METHOD processPayment()
+        IF validateAccount() THEN
+            DISPLAY "Processing transfer..."
+            SET status = "Completed"
+        ELSE
+            DISPLAY "Invalid account number"
+        END IF
+    END METHOD
+
+    METHOD validateAccount()
+        RETURN TRUE
+    END METHOD
+END CLASS
+
+CLASS WalletPayment EXTENDS PaymentMethod
+    ATTRIBUTES
+        PRIVATE walletBalance : Number
+
+    CONSTRUCTOR(amount, walletBalance)
+        CALL PaymentMethod(amount)
+        SET walletBalance
+    END CONSTRUCTOR
+
+    METHOD processPayment()
+        IF walletBalance >= amount THEN
+            SET walletBalance = walletBalance - amount
+            SET status = "Completed"
+        ELSE
+            DISPLAY "Insufficient balance"
+        END IF
+    END METHOD
+END CLASS
+
+CLASS Item
+    ATTRIBUTES
+        PRIVATE itemName : String
+        PRIVATE price : Number
+
+    CONSTRUCTOR(itemName, price)
+        SET itemName
+        SET price
+    END CONSTRUCTOR
+
+    METHOD getPrice()
+        RETURN price
+    END METHOD
+END CLASS
+
+CLASS Order
+    ATTRIBUTES
+        PRIVATE orderID : Number
+        PRIVATE items : List<Item>
+        PRIVATE payment : PaymentMethod
+
+    CONSTRUCTOR(orderID)
+        SET orderID
+        CREATE empty items list
+    END CONSTRUCTOR
+
+    METHOD addItem(item)
+        ADD item TO items
+    END METHOD
+
+    METHOD setPayment(payment)
+        SET payment
+    END METHOD
+
+    METHOD getTotal()
+        SET total = 0
+        FOR EACH item IN items
+            SET total = total + item.getPrice()
+        END FOR
+        RETURN total
+    END METHOD
+END CLASS
+
+   END
+STOP
+
+Task 297: Streaming Service Subscriptions
+START
+    BEGIN
+CLASS Subscription
+    ATTRIBUTES
+        PRIVATE startDate : String
+        PRIVATE monthlyPrice : Number
+
+    CONSTRUCTOR(startDate, monthlyPrice)
+        SET startDate
+        SET monthlyPrice
+    END CONSTRUCTOR
+
+    METHOD isActive()
+        RETURN TRUE
+    END METHOD
+
+    METHOD getStreamingQuality()
+    END METHOD
+
+    METHOD getDeviceLimit()
+    END METHOD
+END CLASS
+
+CLASS BasicPlan EXTENDS Subscription
+    CONSTRUCTOR(startDate, monthlyPrice)
+        CALL Subscription(startDate, monthlyPrice)
+    END CONSTRUCTOR
+
+    METHOD getStreamingQuality()
+        RETURN "Standard Definition"
+    END METHOD
+
+    METHOD getDeviceLimit()
+        RETURN 1
+    END METHOD
+END CLASS
+
+CLASS StandardPlan EXTENDS Subscription
+    CONSTRUCTOR(startDate, monthlyPrice)
+        CALL Subscription(startDate, monthlyPrice)
+    END CONSTRUCTOR
+
+    METHOD getStreamingQuality()
+        RETURN "High Definition"
+    END METHOD
+
+    METHOD getDeviceLimit()
+        RETURN 2
+    END METHOD
+END CLASS
+
+CLASS PremiumPlan EXTENDS Subscription
+    ATTRIBUTES
+        PRIVATE offlineDownloads : Boolean
+
+    CONSTRUCTOR(startDate, monthlyPrice)
+        CALL Subscription(startDate, monthlyPrice)
+        SET offlineDownloads = TRUE
+    END CONSTRUCTOR
+
+    METHOD getStreamingQuality()
+        RETURN "Ultra High Definition"
+    END METHOD
+
+    METHOD getDeviceLimit()
+        RETURN 4
+    END METHOD
+END CLASS
+
+CLASS WatchRecord
+    ATTRIBUTES
+        PRIVATE title : String
+        PRIVATE watchDate : String
+
+    CONSTRUCTOR(title, watchDate)
+        SET title
+        SET watchDate
+    END CONSTRUCTOR
+END CLASS
+
+CLASS UserAccount
+    ATTRIBUTES
+        PRIVATE userID : Number
+        PRIVATE userName : String
+        PRIVATE subscription : Subscription
+        PRIVATE watchHistory : List<WatchRecord>
+
+    CONSTRUCTOR(userID, userName, subscription)
+        SET userID
+        SET userName
+        SET subscription
+        CREATE empty watchHistory list
+    END CONSTRUCTOR
+
+    METHOD addWatchRecord(watchRecord)
+        ADD watchRecord TO watchHistory
+    END METHOD
+END CLASS
+
+   END
+STOP
+
+Task 298: Delivery Vehicles Fleet
+START
+    BEGIN
+CLASS Vehicle
+    ATTRIBUTES
+        PRIVATE licencePlate : String
+        PRIVATE fuelLevel : Number
+        PRIVATE engine : Engine
+
+    CONSTRUCTOR(licencePlate, fuelLevel, engine)
+        SET licencePlate
+        SET fuelLevel
+        SET engine
+    END CONSTRUCTOR
+
+    METHOD calculateDeliveryTime(route)
+        RETURN 0
+    END METHOD
+END CLASS
+
+CLASS Van EXTENDS Vehicle
+    ATTRIBUTES
+        PRIVATE cargoCapacity : Number
+
+    CONSTRUCTOR(licencePlate, fuelLevel, engine, cargoCapacity)
+        CALL Vehicle(licencePlate, fuelLevel, engine)
+        SET cargoCapacity
+    END CONSTRUCTOR
+
+    METHOD calculateDeliveryTime(route)
+        RETURN route.getDistance() / 40
+    END METHOD
+END CLASS
+
+CLASS Motorbike EXTENDS Vehicle
+    ATTRIBUTES
+        PRIVATE smallPackagesOnly : Boolean
+
+    CONSTRUCTOR(licencePlate, fuelLevel, engine)
+        CALL Vehicle(licencePlate, fuelLevel, engine)
+        SET smallPackagesOnly = TRUE
+    END CONSTRUCTOR
+
+    METHOD calculateDeliveryTime(route)
+        RETURN route.getDistance() / 60
+    END METHOD
+END CLASS
+
+CLASS Truck EXTENDS Vehicle
+    ATTRIBUTES
+        PRIVATE maxLoad : Number
+
+    CONSTRUCTOR(licencePlate, fuelLevel, engine, maxLoad)
+        CALL Vehicle(licencePlate, fuelLevel, engine)
+        SET maxLoad
+    END CONSTRUCTOR
+
+    METHOD calculateDeliveryTime(route)
+        RETURN route.getDistance() / 30
+    END METHOD
+END CLASS
+
+CLASS Engine
+    ATTRIBUTES
+        PRIVATE horsepower : Number
+        PRIVATE fuelEfficiency : Number
+
+    CONSTRUCTOR(horsepower, fuelEfficiency)
+        SET horsepower
+        SET fuelEfficiency
+    END CONSTRUCTOR
+END CLASS
+
+CLASS Stop
+    ATTRIBUTES
+        PRIVATE address : String
+        PRIVATE package : String
+
+    CONSTRUCTOR(address, package)
+        SET address
+        SET package
+    END CONSTRUCTOR
+END CLASS
+
+CLASS Route
+    ATTRIBUTES
+        PRIVATE stops : List<Stop>
+        PRIVATE distance : Number
+
+    CONSTRUCTOR(distance)
+        SET distance
+        CREATE empty stops list
+    END CONSTRUCTOR
+
+    METHOD addStop(stop)
+        ADD stop TO stops
+    END METHOD
+
+    METHOD getDistance()
+        RETURN distance
+    END METHOD
+END CLASS
+
+   END
+STOP
+
+Task 299: Bank Cards
+START
+    BEGIN
+CLASS Card
+    ATTRIBUTES
+        PRIVATE cardNumber : String
+        PRIVATE expiryDate : String
+        PRIVATE status : String
+        PRIVATE chip : Chip
+
+    CONSTRUCTOR(cardNumber, expiryDate, chip)
+        SET cardNumber
+        SET expiryDate
+        SET status = "Active"
+        SET chip
+    END CONSTRUCTOR
+
+    METHOD authorisePurchase(amount)
+        RETURN FALSE
+    END METHOD
+END CLASS
+
+CLASS DebitCard EXTENDS Card
+    ATTRIBUTES
+        PRIVATE accountBalance : Number
+
+    CONSTRUCTOR(cardNumber, expiryDate, chip, accountBalance)
+        CALL Card(cardNumber, expiryDate, chip)
+        SET accountBalance
+    END CONSTRUCTOR
+
+    METHOD authorisePurchase(amount)
+        IF accountBalance >= amount THEN
+            SET accountBalance = accountBalance - amount
+            RETURN TRUE
+        ELSE
+            RETURN FALSE
+        END IF
+    END METHOD
+END CLASS
+
+CLASS CreditCard EXTENDS Card
+    ATTRIBUTES
+        PRIVATE creditLimit : Number
+        PRIVATE unpaidPurchases : List<Number>
+
+    CONSTRUCTOR(cardNumber, expiryDate, chip, creditLimit)
+        CALL Card(cardNumber, expiryDate, chip)
+        SET creditLimit
+        CREATE empty unpaidPurchases list
+    END CONSTRUCTOR
+
+    METHOD authorisePurchase(amount)
+        IF getOutstandingBalance() + amount <= creditLimit THEN
+            ADD amount TO unpaidPurchases
+            RETURN TRUE
+        ELSE
+            RETURN FALSE
+        END IF
+    END METHOD
+
+    METHOD getOutstandingBalance()
+        SET total = 0
+        FOR EACH purchase IN unpaidPurchases
+            SET total = total + purchase
+        END FOR
+        RETURN total
+    END METHOD
+END CLASS
+
+CLASS Chip
+    ATTRIBUTES
+        PRIVATE encryptedSecurityData : String
+
+    CONSTRUCTOR(encryptedSecurityData)
+        SET encryptedSecurityData
+    END CONSTRUCTOR
+END CLASS
+
+   END
+STOP
+
+Task 300: Hospital Staff Scheduling
+START
+    BEGIN
+CLASS StaffMember
+    ATTRIBUTES
+        PRIVATE employeeID : Number
+        PRIVATE staffName : String
+        PRIVATE shifts : List<Shift>
+
+    CONSTRUCTOR(employeeID, staffName)
+        SET employeeID
+        SET staffName
+        CREATE empty shifts list
+    END CONSTRUCTOR
+
+    METHOD assignShift(shift)
+        ADD shift TO shifts
+    END METHOD
+
+    METHOD calculateShiftPay()
+        RETURN 0
+    END METHOD
+END CLASS
+
+CLASS Doctor EXTENDS StaffMember
+    CONSTRUCTOR(employeeID, staffName)
+        CALL StaffMember(employeeID, staffName)
+    END CONSTRUCTOR
+
+    METHOD approveTreatment()
+        DISPLAY "Treatment Approved"
+    END METHOD
+
+    METHOD diagnosePatient()
+        DISPLAY "Diagnosis Completed"
+    END METHOD
+
+    METHOD calculateShiftPay()
+        RETURN 500
+    END METHOD
+END CLASS
+
+CLASS Surgeon EXTENDS Doctor
+    CONSTRUCTOR(employeeID, staffName)
+        CALL Doctor(employeeID, staffName)
+    END CONSTRUCTOR
+
+    METHOD performOperation()
+        DISPLAY "Operation Performed"
+    END METHOD
+
+    METHOD calculateShiftPay()
+        RETURN 800
+    END METHOD
+END CLASS
+
+CLASS Nurse EXTENDS StaffMember
+    CONSTRUCTOR(employeeID, staffName)
+        CALL StaffMember(employeeID, staffName)
+    END CONSTRUCTOR
+
+    METHOD administerMedication()
+        DISPLAY "Medication Administered"
+    END METHOD
+
+    METHOD recordVitalSigns()
+        DISPLAY "Vital Signs Recorded"
+    END METHOD
+
+    METHOD calculateShiftPay()
+        RETURN 300
+    END METHOD
+END CLASS
+
+CLASS Shift
+    ATTRIBUTES
+        PRIVATE startTime : String
+        PRIVATE endTime : String
+        PRIVATE ward : Ward
+
+    CONSTRUCTOR(startTime, endTime, ward)
+        SET startTime
+        SET endTime
+        SET ward
+    END CONSTRUCTOR
+END CLASS
+
+CLASS Ward
+    ATTRIBUTES
+        PRIVATE wardName : String
+        PRIVATE shifts : List<Shift>
+
+    CONSTRUCTOR(wardName)
+        SET wardName
+        CREATE empty shifts list
+    END CONSTRUCTOR
+
+    METHOD addShift(shift)
+        ADD shift TO shifts
+    END METHOD
+END CLASS
+
+   END
+STOP
+
+Task 301: E-book Reader App
+START
+    BEGIN
+
+CLASS Publication
+    ATTRIBUTES
+        PRIVATE title : String
+        PRIVATE author : String
+        PRIVATE totalPages : Number
+        PRIVATE coverImage : CoverImage
+
+    CONSTRUCTOR(title, author, totalPages, coverImage)
+        SET title
+        SET author
+        SET totalPages
+        SET coverImage
+    END CONSTRUCTOR
+
+    METHOD getProgress()
+        RETURN 0
+    END METHOD
+END CLASS
+
+CLASS Novel EXTENDS Publication
+    ATTRIBUTES
+        PRIVATE currentPage : Number
+
+    CONSTRUCTOR(title, author, totalPages, coverImage, currentPage)
+        CALL Publication(title, author, totalPages, coverImage)
+        SET currentPage
+    END CONSTRUCTOR
+
+    METHOD getProgress()
+        RETURN (currentPage / totalPages) * 100
+    END METHOD
+END CLASS
+
+CLASS Magazine EXTENDS Publication
+    ATTRIBUTES
+        PRIVATE totalArticles : Number
+        PRIVATE openedArticles : Number
+
+    CONSTRUCTOR(title, author, totalPages, coverImage, totalArticles, openedArticles)
+        CALL Publication(title, author, totalPages, coverImage)
+        SET totalArticles
+        SET openedArticles
+    END CONSTRUCTOR
+
+    METHOD getProgress()
+        RETURN (openedArticles / totalArticles) * 100
+    END METHOD
+END CLASS
+
+CLASS Audiobook EXTENDS Publication
+    ATTRIBUTES
+        PRIVATE totalListeningTime : Number
+        PRIVATE listenedTime : Number
+
+    CONSTRUCTOR(title, author, totalPages, coverImage, totalListeningTime, listenedTime)
+        CALL Publication(title, author, totalPages, coverImage)
+        SET totalListeningTime
+        SET listenedTime
+    END CONSTRUCTOR
+
+    METHOD getProgress()
+        RETURN (listenedTime / totalListeningTime) * 100
+    END METHOD
+END CLASS
+
+CLASS CoverImage
+    ATTRIBUTES
+        PRIVATE filePath : String
+        PRIVATE dimensions : String
+
+    CONSTRUCTOR(filePath, dimensions)
+        SET filePath
+        SET dimensions
+    END CONSTRUCTOR
+END CLASS
+
+CLASS Library
+    ATTRIBUTES
+        PRIVATE publications : List<Publication>
+
+    CONSTRUCTOR()
+        CREATE empty publications list
+    END CONSTRUCTOR
+
+    METHOD addPublication(publication)
+        ADD publication TO publications
+    END METHOD
+END CLASS
+
+   END
+STOP
+
+Task 302: Smart Home Devices
+START
+    BEGIN
+CLASS Device
+    ATTRIBUTES
+        PRIVATE deviceName : String
+        PRIVATE roomLocation : String
+        PRIVATE status : Boolean
+
+    CONSTRUCTOR(deviceName, roomLocation, status)
+        SET deviceName
+        SET roomLocation
+        SET status
+    END CONSTRUCTOR
+
+    METHOD getPowerUsage()
+        RETURN 0
+    END METHOD
+END CLASS
+
+CLASS SmartLight EXTENDS Device
+    ATTRIBUTES
+        PRIVATE brightnessLevel : Number
+
+    CONSTRUCTOR(deviceName, roomLocation, status, brightnessLevel)
+        CALL Device(deviceName, roomLocation, status)
+        SET brightnessLevel
+    END CONSTRUCTOR
+
+    METHOD getPowerUsage()
+        RETURN brightnessLevel * 0.5
+    END METHOD
+END CLASS
+
+CLASS SmartThermostat EXTENDS Device
+    ATTRIBUTES
+        PRIVATE targetTemperature : Number
+        PRIVATE heatingLevel : Number
+
+    CONSTRUCTOR(deviceName, roomLocation, status, targetTemperature, heatingLevel)
+        CALL Device(deviceName, roomLocation, status)
+        SET targetTemperature
+        SET heatingLevel
+    END CONSTRUCTOR
+
+    METHOD getPowerUsage()
+        RETURN heatingLevel * 2
+    END METHOD
+END CLASS
+
+CLASS SmartCamera EXTENDS Device
+    ATTRIBUTES
+        PRIVATE isRecording : Boolean
+        PRIVATE storageUnit : StorageUnit
+
+    CONSTRUCTOR(deviceName, roomLocation, status, isRecording, storageUnit)
+        CALL Device(deviceName, roomLocation, status)
+        SET isRecording
+        SET storageUnit
+    END CONSTRUCTOR
+
+    METHOD getPowerUsage()
+        IF isRecording THEN
+            RETURN 10
+        ELSE
+            RETURN 2
+        END IF
+    END METHOD
+
+    METHOD startRecording()
+        IF storageUnit.hasSpace() THEN
+            SET isRecording = TRUE
+        ELSE
+            DISPLAY "Storage Full"
+        END IF
+    END METHOD
+END CLASS
+
+
+CLASS StorageUnit
+    ATTRIBUTES
+        PRIVATE capacity : Number
+        PRIVATE usedSpace : Number
+
+    CONSTRUCTOR(capacity)
+        SET capacity
+        SET usedSpace = 0
+    END CONSTRUCTOR
+
+    METHOD hasSpace()
+        RETURN usedSpace < capacity
+    END METHOD
+END CLASS
+
+
+CLASS Room
+    ATTRIBUTES
+        PRIVATE roomName : String
+        PRIVATE devices : List<Device>
+
+    CONSTRUCTOR(roomName)
+        SET roomName
+        CREATE empty devices list
+    END CONSTRUCTOR
+
+    METHOD addDevice(device)
+        ADD device TO devices
+    END METHOD
+END CLASS
+
+   END
