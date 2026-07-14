@@ -1,0 +1,164 @@
+OOP Task
+
+Task 278 : Veterinary
+
+CLASS Owner
+    PRIVATE ownerID
+    PRIVATE ownerName
+    PRIVATE phoneNumber
+    PRIVATE address
+    PRIVATE pets
+
+    CONSTRUCTOR(id, name, phone, address)
+        ownerID = id
+        ownerName = name
+        phoneNumber = phone
+        address = address
+        pets = EMPTY LIST
+    END CONSTRUCTOR
+
+    METHOD AddPet(pet)
+        ADD pet TO pets
+    END METHOD
+END CLASS
+
+
+CLASS Species
+    PRIVATE speciesName
+    PRIVATE careRequirements
+
+    CONSTRUCTOR(name, requirements)
+        speciesName = name
+        careRequirements = requirements
+    END CONSTRUCTOR
+END CLASS
+
+
+CLASS MedicalHistory
+    PRIVATE records
+
+    CONSTRUCTOR()
+        records = EMPTY LIST
+    END CONSTRUCTOR
+
+    METHOD AddRecord(record)
+        ADD record TO records
+    END METHOD
+END CLASS
+
+
+CLASS Pet
+    PRIVATE petID
+    PRIVATE petName
+    PRIVATE dateOfBirth
+    PRIVATE species
+    PRIVATE medicalHistory
+
+    CONSTRUCTOR(id, name, dob, species)
+        petID = id
+        petName = name
+        dateOfBirth = dob
+        species = species
+        medicalHistory = NEW MedicalHistory()
+    END CONSTRUCTOR
+
+    METHOD GetAge()
+        RETURN CURRENT_YEAR - YEAR(dateOfBirth)
+    END METHOD
+
+    METHOD AddMedicalRecord(record)
+        medicalHistory.AddRecord(record)
+    END METHOD
+END CLASS
+
+
+CLASS VitalSigns
+    PRIVATE temperature
+    PRIVATE heartRate
+    PRIVATE weight
+
+    CONSTRUCTOR(temp, heart, wt)
+        temperature = temp
+        heartRate = heart
+        weight = wt
+    END CONSTRUCTOR
+END CLASS
+
+
+CLASS Treatment
+    PRIVATE treatmentName
+    PRIVATE cost
+
+    CONSTRUCTOR(name, cost)
+        treatmentName = name
+        cost = cost
+    END CONSTRUCTOR
+END CLASS
+
+
+CLASS Examination
+    PRIVATE diagnosis
+    PRIVATE vitalSigns
+    PRIVATE treatments
+
+    CONSTRUCTOR(diagnosis, vitalSigns)
+        diagnosis = diagnosis
+        this.vitalSigns = vitalSigns
+        treatments = EMPTY LIST
+    END CONSTRUCTOR
+
+    METHOD AddTreatment(treatment)
+        ADD treatment TO treatments
+    END METHOD
+
+    METHOD IsUrgent()
+        IF vitalSigns.temperature   
+            RETURN TRUE
+        ELSE
+            RETURN FALSE
+        END IF
+    END METHOD
+END CLASS
+
+
+CLASS Visit
+    PRIVATE owner
+    PRIVATE pet
+    PRIVATE examination
+
+    CONSTRUCTOR(owner, pet, examination)
+        this.owner = owner
+        this.pet = pet
+        this.examination = examination
+    END CONSTRUCTOR
+
+    METHOD CalculateTotalCost()
+        total = 0
+
+        FOR EACH treatment IN examination.treatments
+            total = total + treatment.cost
+        END FOR
+
+        RETURN total
+    END METHOD
+END CLASS
+
+
+CLASS VeterinaryClinic
+    PRIVATE clinicName
+    PRIVATE visits
+
+    CONSTRUCTOR(name)
+        clinicName = name
+        visits = EMPTY LIST
+    END CONSTRUCTOR
+
+    METHOD AddVisit(visit)
+        ADD visit TO visits
+    END METHOD
+END CLASS
+
+
+  
+  
+  
